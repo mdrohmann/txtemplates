@@ -1,0 +1,5 @@
+include Makefile ez_setup.py
+recursive-include txtemplates/server_templates/templates *.jinja
+graft docs
+prune docs/.build
+recursive-include tests *.py

@@ -1,0 +1,18 @@
+from ..conftest import WorkingBackendsBase, FailingBackendsBase
+
+"""
+The minimal tests for the backend should test the make_backend function and the
+implementation functionality.
+
+"""
+
+
+class TestWorkingBackends(WorkingBackendsBase):
+    """ add backend test functions here """
+
+
+class TestBackendErrors(FailingBackendsBase):
+    pass
+
+
+# vim: set ft=python sw=4 et spell spelllang=en:

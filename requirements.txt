@@ -1,0 +1,5 @@
+pytest>=2.7.0
+sphinx
+pytest-cov
+twisted
+pytest-twisted

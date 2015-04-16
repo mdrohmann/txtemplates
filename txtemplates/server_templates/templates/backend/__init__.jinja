@@ -1,0 +1,57 @@
+from zope.interface import Interface, implements
+from twisted.python import usage
+from txtemplates.utils.twisted_ext import merge_options
+from txtemplates.common.backend import PbProxy, ProxyOptions
+
+
+class IBackend(Interface):
+
+    """
+    TODO: define the backend interface here
+    """
+
+
+class ServerOptions(usage.Options):
+    optParameters = []
+
+    optFlags = []
+
+    subkeys = []
+
+
+class Options(usage.Options):
+    subCommands = [
+        ['server', None, ServerOptions, 'create a default server'],
+        ['proxy', None, ProxyOptions, 'create a backend proxy'],
+    ]
+
+
+class {{ name|capitalize }}Backend(object):
+    implements(IBackend)
+
+    """
+    TODO:
+    Here comes your default implementation.
+    """
+def make_proxy_backend(boptions):
+    pbproxy = PbProxy(IBackend, boptions['address'])
+    return pbproxy
+
+
+def make_backend(options):
+    config = Options()
+    command = 'server'
+    if 'command' in options:
+        command = options.pop('command')
+
+    config.parseOptions([command])
+    config = config.subOptions
+    config = merge_options(config, options, '{{ name|capitalize }} backend')
+    # We do not have any configuration options, so we ignore them.
+    if command == 'server':
+        backend = {{ name|capitalize }}Backend()
+        return backend
+    elif command == 'proxy':
+        return make_proxy_backend(config)
+
+# vim: set ft=python sw=4 et spell spelllang=en:

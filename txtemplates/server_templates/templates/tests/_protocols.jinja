@@ -1,0 +1,36 @@
+from ..conftest import (PBDummyServerBase, PBAdapterBase, WebResourcesBase)
+
+# from txtemplates.utils.html import SingleWebRequest
+# import twisted.web._responses as RESPONSE
+
+
+class TestPBAdapter(PBAdapterBase):
+    """
+    add your own tests for a PB adapter here
+    """
+
+
+class TestDummyServer(PBDummyServerBase):
+    """
+    if any of the methods of your backend interface are not working in the
+    ProxyBackend, mark them as xfail_methods here.
+    """
+    xfail_methods = []
+
+
+class TestWith{{name|capitalize}}Service(WebResourcesBase):
+    full_server_options = [('dummy', {})]
+    full_server_ids = ['dummy']
+
+    # add webrequests with their expected outcome here...
+    webrequests = [
+#        SingleWebRequest(
+#            '/',
+#            method='GET', id='root_not_found',
+#            expect={
+#                'code': RESPONSE.NOT_FOUND,
+#            }),
+    ]
+
+
+# vim: set ft=python sw=4 et spell spelllang=en:

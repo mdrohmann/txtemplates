@@ -1,0 +1,31 @@
+import json
+from cgi import escape as _e
+from twisted.web import resource, server
+from twisted.python import components
+
+from {{module}}.{{ name }}.service import IService
+
+
+
+class {{name | capitalize}}Root(resource.Resource):
+
+    isLeaf = True
+
+    def __init__(self, service):
+        resource.Resource.__init__(self)
+        self.service = service
+
+    def getChild(self, name, request):
+            return resource.NoResource()
+
+
+def registerAdapters():
+    try:
+        components.registerAdapter(
+            {{ name|capitalize }}Root,
+            IService,
+            resource.IResource)
+    except ValueError:
+        pass
+
+# vim: set ft=python sw=4 et spell spelllang=en:
