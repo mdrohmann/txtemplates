@@ -7,7 +7,7 @@
 *.sw[opn]
 docs/build
 .ipynb_checkpoints
-docs/junit-*.xml
+junit-*.xml
 MANIFEST
 *.egg-info
 *.egg
