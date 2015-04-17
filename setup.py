@@ -29,7 +29,7 @@ setup(
     description='Templates to quickly create twisted servers',
     author='Martin C Drohmann',
     author_email='mcd@askthevotegoat.com',
-    version='0.3',
+    version='0.3.1',
     install_requires=['twisted', 'pytest', 'pytest-twisted'],
     scripts=['scripts/make_new_server.py'],
     package_data={
