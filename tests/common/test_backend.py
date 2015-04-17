@@ -1,10 +1,10 @@
 from twisted.internet import defer, reactor
-from voteapp.common import backend
-import voteapp.echo
+from txtemplates.common import backend
+import txtemplates.echo
 
 
 def test_pb_proxy_failed():
-    interface = voteapp.echo.backend.IBackend
+    interface = txtemplates.echo.backend.IBackend
     pbproxy = backend.PbProxy(
         interface, 'tcp:localhost:port=1234:timeout=1', reactor)
 

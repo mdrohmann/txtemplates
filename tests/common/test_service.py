@@ -4,7 +4,7 @@ import json
 from twisted.python import usage
 from twisted.application import service
 
-import voteapp.common.service as vcs
+import txtemplates.common.service as vcs
 
 
 def test_options_errors():
@@ -43,10 +43,11 @@ def test_options():
 
 
 scenarios = [
-    ('echo', 'voteapp.echo', 'Echo debug test', 'echo'),
-    ('tallygist', 'voteapp.tallygist', 'tallygist test', 'tallygist'),
+    ('echo', 'txtemplates.echo', 'Echo debug test', 'echo'),
+    #    ('tallygist', 'voteapp.tallygist', 'tallygist test', 'tallygist'),
     ]
-ids = ['echo', 'tallygist']
+ids = ['echo'  # , 'tallygist'
+       ]
 
 
 @pytest.fixture(params=scenarios, ids=ids)

@@ -1,4 +1,4 @@
-server_module = 'voteapp.echo'
+server_module = 'txtemplates.echo'
 
 backend_options = [{}]
 backend_ids = ['default']

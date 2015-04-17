@@ -4,10 +4,9 @@ import os
 import argparse
 import sys
 import re
-import importlib
 import pytest
-from voteapp import server_templates
-import voteapp
+from txtemplates import server_templates
+import txtemplates
 
 
 def test_get_parser_error(capsys):
@@ -20,7 +19,7 @@ def test_get_parser_error(capsys):
 
 
 @pytest.mark.parametrize('argstr, expected', [
-    ('module', {'name': 'module', 'module': 'voteapp'}),
+    ('module', {'name': 'module', 'module': 'txtemplates'}),
     ('module package', {'name': 'module', 'module': 'package'}),
     ('module package -C directory', {'directory': 'directory'})
     ])
@@ -33,13 +32,13 @@ def test_get_parser(argstr, expected):
 
 
 def test_get_target_module():
-    directory = os.path.dirname(os.path.dirname(voteapp.__file__))
-    args = argparse.Namespace(module='voteapp', directory=directory)
+    directory = os.path.dirname(os.path.dirname(txtemplates.__file__))
+    args = argparse.Namespace(module='txtemplates', directory=directory)
     module = server_templates.get_target_module(args)
-    assert module == voteapp
-    args = argparse.Namespace(module='voteapp', directory='/tmp')
+    assert module == txtemplates
+    args = argparse.Namespace(module='txtemplates', directory='/tmp')
     module = server_templates.get_target_module(args)
-    assert module == voteapp
+    assert module == txtemplates
 
 
 @pytest.fixture(scope="function")

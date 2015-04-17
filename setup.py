@@ -33,7 +33,7 @@ setup(
     install_requires=['twisted', 'pytest', 'pytest-twisted'],
     scripts=['scripts/make_new_server.py'],
     package_data={
-        'voteapp.server_templates': [
+        'txtemplates.server_templates': [
             'templates/*.jinja', 'templates/*/*.jinja'],
     },
     license='LICENSE',

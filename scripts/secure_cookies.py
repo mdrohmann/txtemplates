@@ -13,7 +13,7 @@ from twisted.web.resource import Resource
 from twisted.web import client
 from twisted.web.http_headers import Headers
 from twisted.internet.endpoints import TCP4ServerEndpoint
-from voteapp.utils.twisted_ext import getSecureSession
+from txtemplates.utils.twisted_ext import getSecureSession
 
 from twisted.web.server import Site
 

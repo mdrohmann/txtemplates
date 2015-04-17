@@ -12,7 +12,7 @@ import re
 import copy
 
 import pytest
-import numpy as np
+import random
 from twisted.application import service
 from twisted.python.reflect import namedAny
 from twisted.spread import pb
@@ -48,7 +48,7 @@ def backend_methods_fixture(request):
 
 def _make_backend(boptions, module):
 
-    np.random.seed(323)
+    random.seed(323)
     if boptions == 'dummy':
         DummyBackend = create_dummy_class_for(module.backend.IBackend)
         return DummyBackend()

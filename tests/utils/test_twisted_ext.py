@@ -1,7 +1,6 @@
 import pytest
 import StringIO
-import numpy as np
-from voteapp.utils.twisted_ext import (
+from txtemplates.utils.twisted_ext import (
     CachedQueue, parallel_generator, jelly_test)
 from twisted.internet import defer, task
 from twisted.python import log
@@ -51,10 +50,10 @@ def test_cached_queue1():
     for item in range(10):
         cq.add_item(item)
 
-    np.testing.assert_array_equal(cq.get_arg(), range(10))
+    assert list(cq.get_arg()) == range(10)
     assert len(cq.get_queue()) == 0
     clock.advance(10)
-    np.testing.assert_array_equal(cq.get_queue(), range(5, 10))
+    assert list(cq.get_queue()) == range(5, 10)
     assert len(cq.get_arg()) == 0
 
 
@@ -65,11 +64,11 @@ def test_cached_queue2():
         cq.add_item(item)
     # process 5 items only
     clock.advance(10)
-    np.testing.assert_array_equal(cq.get_queue(), range(5))
-    np.testing.assert_array_equal(cq.get_arg(), range(5, 10))
+    assert list(cq.get_queue()) == range(5)
+    assert list(cq.get_arg()) == range(5, 10)
     # process all items
     clock.advance(10)
-    np.testing.assert_array_equal(cq.get_queue(), range(5, 10))
+    assert list(cq.get_queue()) == range(5, 10)
     assert len(cq.get_arg()) == 0
 
 

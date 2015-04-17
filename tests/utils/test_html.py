@@ -4,11 +4,11 @@
 import re
 from StringIO import StringIO
 import pytest
-from voteapp.utils.html import (
+from txtemplates.utils.html import (
     accepted_mimetypes, SingleWebRequest, BadRequestError)
 from twisted.web.test import requesthelper
 
-from voteapp.logger import test
+from txtemplates.logger import test
 
 logger = test.configure_logger()
 

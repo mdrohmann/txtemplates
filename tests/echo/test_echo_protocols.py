@@ -4,7 +4,7 @@ from twisted.internet import defer
 import twisted.web._responses as RESPONSE
 
 from ..conftest import (PBDummyServerBase, PBAdapterBase, WebResourcesBase)
-from voteapp.utils.html import SingleWebRequest
+from txtemplates.utils.html import SingleWebRequest
 
 
 class TestPBAdapter(PBAdapterBase):
