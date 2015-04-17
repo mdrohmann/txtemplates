@@ -72,8 +72,9 @@ def test_run(testpackage, monkeypatch):
 
     server_templates.main()
 
-    files = [str(f)[len(str(tempdir)):] for f in tempdir.visit()]
-    assert len(files) == 22
+    files = [str(f)[len(str(tempdir)):] for f in tempdir.visit()
+             if not str(f).endswith('.pyc') and not '__pycache__' in str(f)]
+    assert len(files) == 21
     assert '/testpackage/testmodule/backend/__init__.py' in files
     assert '/tests/testmodule/test_testmodule_backend.py' in files
 
