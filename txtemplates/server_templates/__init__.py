@@ -7,21 +7,6 @@ import importlib
 from jinja2 import Environment, FileSystemLoader
 
 
-def render_and_write(env, basedir, fname, values, rename_fn=None):
-    template = env.get_template(fname)
-    dirname = os.path.dirname(fname)
-    basename = os.path.splitext(os.path.basename(fname))[0]
-    if rename_fn is not None:
-        dirname, basename = rename_fn(dirname, basename, values)
-    fn = '{}.py'.format(basename)
-    full_path = os.path.join(basedir, dirname)
-    if len(full_path) > 0:
-        silent_mkdirs(os.path.join(full_path))
-    filename = os.path.join(full_path, fn)
-    with open(filename, 'w') as fh:
-        fh.write(template.render(values))
-
-
 def silent_mkdirs(path):
     try:
         os.makedirs(path)
@@ -54,6 +39,9 @@ def get_parser():
         '-C', '--directory', metavar='DIRECTORY', type=str,
         default='.',
         help='change in this directory before creating the files')
+    parser.add_argument(
+        '-f', '--force-overwrite', action='store_true',
+        help='overwrite existing files')
     return parser
 
 
@@ -86,8 +74,26 @@ class Unpacker(object):
 
     def __init__(self, DIRS, args):
         self.args = args
+        self.skip_existing = (not args.force_overwrite)
         self.DIRS = DIRS
         self.env, self.templates, self.values = prepare_templates(args)
+
+    def render_and_write(self, basedir, fname, values, rename_fn=None):
+        template = self.env.get_template(fname)
+        dirname = os.path.dirname(fname)
+        basename = os.path.splitext(os.path.basename(fname))[0]
+        if rename_fn is not None:
+            dirname, basename = rename_fn(dirname, basename, values)
+        fn = '{}.py'.format(basename)
+        full_path = os.path.join(basedir, dirname)
+        if len(full_path) > 0:
+            silent_mkdirs(os.path.join(full_path))
+        filename = os.path.join(full_path, fn)
+        if os.path.exists(filename) and self.skip_existing:
+            print "{} exists: Skipped!".format(filename)
+        else:
+            with open(filename, 'w') as fh:
+                fh.write(template.render(values))
 
     def _rename_test(self, dirname, fn, values):
         if fn.startswith('_') and not fn.startswith('__'):
@@ -95,12 +101,13 @@ class Unpacker(object):
         return '', fn
 
     def _unpack(self, file_selector, directory, rename_fn=None):
+
         if isinstance(file_selector, basestring):
             file_selector = (lambda f: f == file_selector)
 
         files = [f for f in self.templates if file_selector(f)]
         for f in files:
-            render_and_write(self.env, directory, f, self.values, rename_fn)
+            self.render_and_write(directory, f, self.values, rename_fn)
             self.templates.remove(f)
 
     def _create_init_py(self, directory):
