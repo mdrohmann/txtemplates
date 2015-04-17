@@ -7,7 +7,7 @@ def test_linkcheck(tmpdir):
     htmldir = tmpdir.join("html")
     subprocess.check_call(
         ["sphinx-build", "-W", "-blinkcheck",
-         "-d", str(doctrees), ".", str(htmldir)])
+         "-d", str(doctrees), "source", str(htmldir)])
 
 
 def test_build_docs(tmpdir):
@@ -15,4 +15,4 @@ def test_build_docs(tmpdir):
     htmldir = tmpdir.join("html")
     subprocess.check_call([
         "sphinx-build", "-W", "-bhtml",
-        "-d", str(doctrees), ".", str(htmldir)])
+        "-d", str(doctrees), "source", str(htmldir)])
