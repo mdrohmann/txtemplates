@@ -6,6 +6,7 @@
 *.pyc
 *.sw[opn]
 docs/build
+docs/.coverage
 .ipynb_checkpoints
 junit-*.xml
 MANIFEST
