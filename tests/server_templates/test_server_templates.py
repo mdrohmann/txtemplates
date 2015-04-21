@@ -81,7 +81,7 @@ def test_run(testpackage, monkeypatch, capsys):
 
     # second run should skip all files
     p = tempdir.join('testpackage').join('__init__.py')
-    text = "This should not be overwritten"
+    text = "# This should not be overwritten"
     p.write(text)
 
     server_templates.main()
