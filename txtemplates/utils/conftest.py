@@ -26,24 +26,44 @@ from txtemplates.utils.zope_ext import (
 from txtemplates.utils.html import SingleWebRequest
 
 
+# introduce the @incremental marker
+def pytest_runtest_makereport(item, call):
+    if "incremental" in item.keywords:
+        if call.excinfo is not None:
+            parent = item.parent
+            parent._previousfailed = item
+
+
+def pytest_runtest_setup(item):
+    if "incremental" in item.keywords:
+        previousfailed = getattr(item.parent, "_previousfailed", None)
+        if previousfailed is not None:
+            pytest.xfail(
+                "previous test failed ({})".format(previousfailed.name))
+
+
+def default_option_handler(request):
+    return copy.copy(request.param)
+
+
 @pytest.fixture(scope="module")
 def html_request(request):
-    return copy.copy(request.param)
+    return default_option_handler(request)
 
 
 @pytest.fixture(scope="module")
 def backend_options(request):
-    return copy.copy(request.param)
+    return default_option_handler(request)
 
 
 @pytest.fixture(scope="module")
 def full_server_options(request):
-    return copy.copy(request.param)
+    return default_option_handler(request)
 
 
 @pytest.fixture(scope="class")
 def backend_methods_fixture(request):
-    return copy.copy(request.param)
+    return default_option_handler(request)
 
 
 def _make_backend(boptions, module):

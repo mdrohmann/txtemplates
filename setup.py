@@ -4,6 +4,7 @@ ez_setup.use_setuptools()
 import sys
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
+from txtemplates import version
 
 
 class PyTest(TestCommand):
@@ -29,7 +30,7 @@ setup(
     description='Templates to quickly create twisted servers',
     author='Martin C Drohmann',
     author_email='mcd@askthevotegoat.com',
-    version='0.3.2',
+    version=version.long(),
     install_requires=['twisted', 'pytest', 'pytest-twisted'],
     scripts=['scripts/make_new_server.py'],
     package_data={

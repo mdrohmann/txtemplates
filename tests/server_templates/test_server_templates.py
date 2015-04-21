@@ -21,7 +21,8 @@ def test_get_parser_error(capsys):
 @pytest.mark.parametrize('argstr, expected', [
     ('module', {'name': 'module', 'module': 'txtemplates'}),
     ('module package', {'name': 'module', 'module': 'package'}),
-    ('module package -C directory', {'directory': 'directory'})
+    ('module package -C directory -f',
+        {'directory': 'directory', 'force_overwrite': True})
     ])
 def test_get_parser(argstr, expected):
     parser = server_templates.get_parser()
@@ -63,7 +64,7 @@ def test_dirs(testpackage):
     assert dirs.test == os.path.join(basedir, 'tests', 'module')
 
 
-def test_run(testpackage, monkeypatch):
+def test_run(testpackage, monkeypatch, capsys):
     tempdir, package = testpackage
     monkeypatch.setattr(
         sys, "argv",
@@ -77,5 +78,30 @@ def test_run(testpackage, monkeypatch):
     assert len(files) == 21
     assert '/testpackage/testmodule/backend/__init__.py' in files
     assert '/tests/testmodule/test_testmodule_backend.py' in files
+
+    # second run should skip all files
+    p = tempdir.join('testpackage').join('__init__.py')
+    text = "# This should not be overwritten"
+    p.write(text)
+
+    server_templates.main()
+
+    out, _ = capsys.readouterr()
+    assert re.search(text, p.read())
+    assert re.search('exists: Skipped', out)
+
+    # another run with overwrite flag turned on, should overwrite the existing
+    # files.
+    monkeypatch.setattr(
+        sys, "argv",
+        "main.py testmodule testpackage -C {} -f"
+        .format(str(tempdir)).split(" "))
+
+    server_templates.main()
+
+    p = tempdir.join('testpackage').join('__init__.py')
+    out, _ = capsys.readouterr()
+    assert re.search(text, p.read())
+    assert not re.search('exists: Skipped', out)
 
 # vim:set ft=python sw=4 et spell spelllang=en:
